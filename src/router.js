@@ -1,27 +1,32 @@
-import { createRouter, createWebHistory } from 'vue-router'
-
-import HomePage from '@/views/HomePage.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomePage from './views/HomePage.vue';
+import OtherPage from './views/OtherPage.vue';
+import LoginPage from './views/LoginPage.vue';
+import SignUpPage from './views/SignUpPage.vue'; // ⭐ NEW
 
 const routes = [
+  { path: '/', name: 'home', component: HomePage },
+  { path: '/login', name: 'login', component: LoginPage },
+  { path: '/signup', name: 'signup', component: SignUpPage }, // ⭐ NEW
   {
-    path: '/',
-    name: 'home',
-    component: HomePage,
-  },
-  {
-    path: '/other',
-    name: 'other',
-    component: () => import('@/views/OtherPage.vue'),
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/',
-  },
-]
+    path: '/dashboard',
+    name: 'dashboard',
+    component: OtherPage,
+    meta: { requiresAuth: true }
+  }
+];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
-})
+  history: createWebHistory(),
+  routes
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
+  if (to.meta.requiresAuth && !token) {
+    return next({ name: 'login' });
+  }
+  next();
+});
+
+export default router;
