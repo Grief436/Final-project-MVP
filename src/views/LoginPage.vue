@@ -11,7 +11,7 @@
         <label>Password</label>
         <input v-model="password" type="password" placeholder="••••••••" />
 
-        <button type="submit" class="login-btn">Login</button>
+        <button type="submit" class="login-btn">Sign In</button>
 
         <p v-if="error" class="error">{{ error }}</p>
 
@@ -24,27 +24,28 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { login } from '../api';
+import { ref } from 'vue'
+import { useAuthStore } from '../stores/auth'
 
-const email = ref('demo@example.com');
-const password = ref('password123');
-const error = ref('');
-const router = useRouter();
+const email = ref('demo@example.com')
+const password = ref('password123')
+const error = ref('')
+
+const auth = useAuthStore()
 
 const handleLogin = async () => {
-  error.value = '';
-  try {
-    const { token } = await login(email.value, password.value);
-    localStorage.setItem('token', token);
-    
-    window.location.href = "https://vue-basic-template.rmonta23.workers.dev";
+  error.value = ''
 
-  } catch {
-    error.value = 'Invalid email or password';
+  try {
+    await auth.login(email.value, password.value)
+
+    // Redirect to your deployed site
+    window.location.href = "https://vue-basic-template.rmonta23.workers.dev"
+
+  } catch (err) {
+    error.value = 'Invalid email or password'
   }
-};
+}
 </script>
 
 <style scoped>
