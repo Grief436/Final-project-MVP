@@ -38,7 +38,9 @@ const handleLogin = async () => {
   try {
     const { token } = await login(email.value, password.value);
     localStorage.setItem('token', token);
-    router.push('/dashboard');
+    
+    window.location.href = "https://vue-basic-template.rmonta23.workers.dev";
+
   } catch {
     error.value = 'Invalid email or password';
   }
