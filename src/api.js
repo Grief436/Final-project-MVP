@@ -1,4 +1,4 @@
-const BASE_URL = 'https://your-backend-domain.workers.dev'; // change this
+const BASE_URL = "https://vue-basic-template.rmonta23.workers.dev"; // change this
 
 export async function login(email, password) {
   const res = await fetch(`${BASE_URL}/auth/login`, {

@@ -24,6 +24,7 @@
 </template>
 
 <script setup>
+import { login } from "@/lib/api";
 import { ref } from 'vue'
 import { useAuthStore } from '../stores/auth'
 
@@ -39,7 +40,7 @@ const handleLogin = async () => {
   try {
     await auth.login(email.value, password.value)
 
-    // Redirect to your deployed site
+    
     window.location.href = "https://vue-basic-template.rmonta23.workers.dev"
 
   } catch (err) {
